@@ -5,22 +5,28 @@ import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.rumpilstilstkin.lesson1.R;
 
 @InjectViewState
-public class Presenter extends MvpPresenter<MoxyExampleView> {
+public class Presenter extends MvpPresenter<MoxyView> {
+
+    private static final int FIRST_MODEL_INDEX = 0;
+    private static final int SECOND_MODEL_INDEX = 1;
+    private static final int THIRD_MODEL_INDEX = 2;
 
     private Model mModel;
+
+    public Presenter(Model model) {
+        this.mModel = model;
+    }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        mModel = new Model();
         Log.d("Dto", "first attach");
     }
 
     @Override
-    public void attachView(MoxyExampleView view) {
+    public void attachView(MoxyView view) {
         super.attachView(view);
         Log.d("Dto", "attach view");
     }
@@ -30,24 +36,21 @@ public class Presenter extends MvpPresenter<MoxyExampleView> {
         return currentValue + 1;
     }
 
-    public void buttonClick(final int btnIndex) {
-        int newModelValue;
-        switch (btnIndex) {
-            case R.id.btnCounter1:
-                newModelValue = calcNewModelValue(0);
-                mModel.setElementValueAtIndex(0, newModelValue);
-                getViewState().setButtonText(1, newModelValue);
-                break;
-            case R.id.btnCounter2:
-                newModelValue = calcNewModelValue(1);
-                mModel.setElementValueAtIndex(1, newModelValue);
-                getViewState().setButtonText(2, newModelValue);
-                break;
-            case R.id.btnCounter3:
-                newModelValue = calcNewModelValue(2);
-                mModel.setElementValueAtIndex(2, newModelValue);
-                getViewState().setButtonText(3, newModelValue);
-                break;
-        }
+    void changeValueFirst() {
+        int newModelValue = calcNewModelValue(FIRST_MODEL_INDEX);
+        mModel.setElementValueAtIndex(FIRST_MODEL_INDEX, newModelValue);
+        getViewState().showValueFirst(newModelValue);
+    }
+
+    void changeValueSecond() {
+        int newModelValue = calcNewModelValue(SECOND_MODEL_INDEX);
+        mModel.setElementValueAtIndex(SECOND_MODEL_INDEX, newModelValue);
+        getViewState().showValueSecond(newModelValue);
+    }
+
+    void changeValueThird() {
+        int newModelValue = calcNewModelValue(THIRD_MODEL_INDEX);
+        mModel.setElementValueAtIndex(THIRD_MODEL_INDEX, newModelValue);
+        getViewState().showValueThird(newModelValue);
     }
 }
